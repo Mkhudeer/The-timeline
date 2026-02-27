@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+<h1>Timeline</h1>
+
+<% posts.forEach(function(post){ %>
+  <h3><%= post.name %></h3>
+  <p><%= post.createdAt %></p>
+  <p><%= post.message %></p>
+  <hr>
+<% }); %>
+
+</body>
+</html>
