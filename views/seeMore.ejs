@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('extras/head') %>
+</head>
+
+<body class="tl-body">
+  <main class="tl-shell">
+    <div class="container tl-wrap">
+      <header class="tl-header">
+        <h2 class="tl-title">Timeline</h2>
+        <a class="tl-backLink" href="/">← Back</a>
+      </header>
+
+      <article class="card tl-card tl-postView">
+        <div class="card-body">
+          <div class="tl-meta">
+            <span class="tl-date"><%= post.createdAt.toDateString() %></span>
+          </div>
+
+          <p class="tl-bodyText"><%= post.post %></p>
+
+          <div class="tl-viewActions">
+            <a href="/edit/<%= post._id %>" class="btn btn-primary tl-btnPrimary">Edit post</a>
+            <a href="/delete/post/<%= post._id %>" class="btn btn-danger tl-btnDanger">Delete</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+</body>
+</html>

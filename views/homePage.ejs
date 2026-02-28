@@ -1,19 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
+  <%- include('extras/head') %>
 </head>
-<body>
 
-<h1>Timeline</h1>
+<body class="tl-body">
+  <main class="tl-shell">
+    <div class="container tl-wrap">
+      <header class="tl-header">
+        <h2 class="tl-title">Timeline</h2>
+        <p class="tl-subtitle">Share something with your future self.</p>
+      </header>
 
-<% posts.forEach(function(post){ %>
-  <h3><%= post.name %></h3>
-  <p><%= post.createdAt %></p>
-  <p><%= post.message %></p>
-  <hr>
-<% }); %>
+      <section class="tl-panel card tl-card">
+        <div class="card-body">
+          <h3 class="tl-panelTitle">Post a message</h3>
 
+          <% if (error) { %>
+            <div class="alert alert-danger tl-alert" role="alert">
+              <strong>Oops!</strong> <%= error %>
+            </div>
+          <% } %>
+
+          <form class="tl-form" action="/add-post" method="POST">
+            <div class="tl-field">
+              <textarea
+                name="post"
+                class="form-control tl-textarea"
+                rows="4"
+                placeholder="Type your post here (min 25 characters)..."
+                required
+              ></textarea>
+              <div class="tl-hint">Minimum length: 25 characters.</div>
+            </div>
+
+            <div class="tl-actions">
+              <button class="btn btn-primary tl-btnPrimary">Post a message</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="tl-feed">
+        <% posts.forEach(post => { %>
+          <article class="card tl-card tl-postCard mb-3">
+            <div class="card-body">
+              <div class="tl-meta">
+                <span class="tl-date"><%= post.createdAt.toDateString() %></span>
+              </div>
+
+              <p class="tl-excerpt">
+                <%= post.post.length > 150 ? post.post.substring(0,150) + "..." : post.post %>
+              </p>
+
+              <div class="tl-postActions">
+                <a href="/posts/<%= post._id %>" class="btn btn-sm btn-outline-primary tl-btnOutline">
+                  See More
+                </a>
+              </div>
+            </div>
+          </article>
+        <% }) %>
+      </section>
+    </div>
+  </main>
 </body>
 </html>

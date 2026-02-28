@@ -1,11 +1,16 @@
-const express = require("express");
+const express = require('express');
 const app = express();
+const route = require('./config/routes');
+const port = 3000;
 
-const routes = require("./config/routes");
+require('./config/mongoose');
 
-app.set('view engine','ejs');
-app.use(routes);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use('/public', express.static('public'));
 
-app.listen(1200, () => {
-  console.log("Server is running ");
-});
+app.set('view engine', 'ejs');
+
+app.use(route);
+
+app.listen(port, () => console.log(`Server is on ${port}`));
