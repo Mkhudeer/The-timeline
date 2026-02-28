@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('extras/head') %>
+</head>
+
+<body class="tl-body">
+  <main class="tl-shell">
+    <div class="container tl-wrap">
+      <header class="tl-header">
+        <h2 class="tl-title">Edit</h2>
+        <a class="tl-backLink" href="/posts/<%= post._id %>">Back</a>
+      </header>
+
+      <section class="card tl-card tl-editCard">
+        <div class="card-body">
+          <h3 class="tl-panelTitle">Edit a post</h3>
+
+          <% if (error) { %>
+            <div class="alert alert-danger tl-alert" role="alert">
+              <strong>Oops!</strong> <%= error %>
+            </div>
+          <% } %>
+
+          <form class="tl-form" action="/edit/<%= post._id %>" method="POST">
+            <div class="tl-field">
+              <textarea
+                name="post"
+                class="form-control tl-textarea"
+                rows="6"
+                required
+              ><%= post.post %></textarea>
+              <div class="tl-hint">Minimum length: 25 characters.</div>
+            </div>
+
+            <div class="tl-actions">
+              <button class="btn btn-primary tl-btnPrimary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
