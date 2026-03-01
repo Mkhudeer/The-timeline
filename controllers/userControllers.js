@@ -78,7 +78,6 @@ const updatePost = (req, res) => {
         .catch(err => {
             console.log(err);
 
-            // ✅ رجّع صفحة التعديل مع رسالة الفاليديشن
             postModel.findById(req.params.id)
                 .then(result => {
                     const msg = err?.errors?.post?.message || "Invalid post";
