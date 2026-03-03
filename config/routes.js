@@ -9,5 +9,8 @@ route.get('/edit/:id', userController.editPost);
 route.post('/edit/:id', userController.updatePost);
 route.get('/delete/post/:id', userController.deletePost);
 
+// comment routes
+route.post('/post/add/new-comment/:postId', userController.addComment);
+route.get('/delete/comment/:commentId/:postId', userController.deleteComment);
 
 module.exports = route;

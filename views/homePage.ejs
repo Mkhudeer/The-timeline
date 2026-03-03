@@ -35,7 +35,7 @@
             </div>
 
             <div class="tl-actions">
-              <button class="btn btn-primary tl-btnPrimary">Post a message</button>
+              <button class="btn btn-primary tl-btnPrimary" type="submit">Post a message</button>
             </div>
           </form>
         </div>
@@ -59,6 +59,29 @@
                 </a>
               </div>
             </div>
+
+            <div class="comments-form">
+              <form method="POST" action="/post/add/new-comment/<%= post._id %>">
+                <input type="text" placeholder="comment..." autocomplete="off" name="body">
+                <button type="submit">Add Comment</button>
+              </form>
+            </div>
+
+            <div class="comment-container">
+              <% if (post.comments && post.comments.length > 0) { %>
+                <% post.comments.forEach(comment => { %>
+                  <div class="comment-section">
+                    <h4><%= comment.body %></h4>
+
+                    <!-- خيار 1: button داخل form (GET) -->
+                    <form action="/delete/comment/<%= comment._id %>/<%= post._id %>" method="GET">
+                      <button type="submit" class="comment-section-button">Delete</button>
+                    </form>
+                  </div>
+                <% }) %>
+              <% } %>
+            </div>
+
           </article>
         <% }) %>
       </section>
