@@ -10,10 +10,6 @@ app.use(express.json());
 app.use('/public', express.static('public'));
 
 app.set('view engine', 'ejs');
-// app.use((req, res, next) => {
-//   console.log("REQ:", req.method, req.url);
-//   next();
-// });
 
 app.use(route);
 

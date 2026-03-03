@@ -6,17 +6,9 @@ const postSchema = new mongoose.Schema({
   required: [true, "Post is required"],
   minlength: [25, "Post should be minimum 25 character"],
   trim: true
+}
 },
-    comments: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'comment'
-},
-    ],
-    createdAt: {
-        type: Date,
-        default: Date.now()
-    }
-});
+    { timestamps: true }
+);
 
 module.exports = mongoose.model('post', postSchema);

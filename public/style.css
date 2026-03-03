@@ -56,10 +56,6 @@
   border-radius: 12px;
 }
 
-input{
-  width: 300px;
-}
-
 .tl-form {
   display: flex;
   flex-direction: column;
@@ -133,36 +129,4 @@ input{
 .tl-btnDanger {
   border-radius: 12px;
   font-weight: 700;
-}
-
-.comment-container {
-     background: #fff6eb;
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    margin-right: 20px;
-    padding: 15px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-    display: flex;
-    flex-direction: column;
-    gap: 35px;
-}
-
-.comment-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background-color: white;
-    box-shadow: 0 .25rem .5rem rgba(0,0,0,.1);
-    border-radius: 30px;
-}
-
-.btn-danger, .comment-section-button {
-    background-color: red;
-    color: white;
-    border: unset;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-    border-radius: 10px;
-    cursor: pointer;
 }
