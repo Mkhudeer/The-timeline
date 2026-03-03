@@ -6,7 +6,6 @@ const homePage = (req, res) => {
     .sort({ createdAt: -1 })
     .populate('comments', "_id body")
     .then(result => {
-      // شيلنا طباعة كل الداتا
       res.render('homepage', { posts: result, error: null })
     })
     .catch(err => {
