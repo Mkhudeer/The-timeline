@@ -73,7 +73,7 @@
                   <div class="comment-section">
                     <h4><%= comment.body %></h4>
 
-                    <!-- خيار 1: button داخل form (GET) -->
+                    
                     <form action="/delete/comment/<%= comment._id %>/<%= post._id %>" method="GET">
                       <button type="submit" class="comment-section-button">Delete</button>
                     </form>

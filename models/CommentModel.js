@@ -1,18 +1,21 @@
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
-   body: {
-  type: String,
-  
-},
-   post: {
+  body: {
+    type: String,
+    required: [true, "Comment is required"],
+    minlength: [25, "Comment should be minimum 25 character"],
+    trim: true
+  },
+  post: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'post'
-   },
-createdAt: {
+    ref: 'post',
+    required: true
+  },
+  createdAt: {
     type: Date,
-    default: Date.now()
-}
-})
+    default: Date.now
+  }
+});
 
 module.exports = mongoose.model('comment', commentSchema);
