@@ -3,8 +3,8 @@
 <head>
   <%- include('extras/head') %>
 </head>
-
 <body class="tl-body">
+  <%- include("extras/header", { user: user }) %>
   <main class="tl-shell">
     <div class="container tl-wrap">
       <header class="tl-header">
@@ -16,15 +16,19 @@
         <div class="card-body">
           <div class="tl-meta">
             <span class="tl-date"><%= post.createdAt.toDateString() %></span>
+<% if (post.authorName) { %>
+  <span class="tl-author"> - <%= post.authorName %></span>
+<% } %>
           </div>
 
           <p class="tl-bodyText"><%= post.post %></p>
-
+            <% if (user) { %>
           <div class="tl-viewActions">
             <a href="/edit/<%= post._id %>" class="btn btn-primary tl-btnPrimary">Edit post</a>
             <a href="/delete/post/<%= post._id %>" class="btn btn-danger tl-btnDanger">Delete</a>
           </div>
         </div>
+        <% } %>
       </article>
     </div>
   </main>

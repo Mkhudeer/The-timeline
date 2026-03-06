@@ -4,42 +4,44 @@ const commentModel = require('../models/CommentModel');
 const homePage = (req, res) => {
   postModel.find()
     .sort({ createdAt: -1 })
-    .populate('comments', "_id body")
-    .then(result => {
-      // شيلنا طباعة كل الداتا
-      res.render('homepage', { posts: result, error: null })
+    .populate('comments', "_id body authorName")
+    .then(result => { 
+     res.render('homePage', { posts: result, error: null, user: req.user || null })
     })
     .catch(err => {
       console.log(err);
-      res.render('homepage', { posts: [], error: "Something went wrong" }) 
+      res.render('homePage', { posts: [], error: "Something went wrong", user: req.user || null })
     })
 };
 
 const addPost = (req, res) => {
-  let newPost = new postModel(req.body)
+  let newPost = new postModel({
+    post: req.body.post,
+    authorName: req.user.name,
+    authorId: req.user.id
+  });
+
   newPost.save()
-    .then(() => {
-      res.redirect('/')
-    })
+    .then(() => res.redirect('/'))
     .catch(err => {
       console.log(err);
 
       postModel.find().sort({ createdAt: -1 })
         .then(result => {
           const msg = err?.errors?.post?.message || "Invalid post";
-          res.render('homepage', { posts: result, error: msg })
+          res.render('homePage', { posts: result, error: msg, user: req.user || null });
         })
         .catch(e => {
           console.log(e);
-          res.render('homepage', { posts: [], error: "Invalid post" })
-        })
-    })
+          res.render('homePage', { posts: [], error: "Invalid post", user: req.user || null });
+        });
+    });
 };
 
 const seeMore = (req, res) => {
   postModel.findById(req.params.id)
     .then(result => {
-      res.render('seeMore', { post: result })
+      res.render('seeMore', { post: result, user: req.user || null })
     })
     .catch(err => {
       console.log(err);
@@ -50,7 +52,7 @@ const seeMore = (req, res) => {
 const editPost = (req, res) => {
   postModel.findById(req.params.id)
     .then(result => {
-      res.render('editPost', { post: result, error: null })
+      res.render('editPost', { post: result, error: null, user: req.user || null })
     })
     .catch(err => {
       console.log(err);
@@ -93,41 +95,35 @@ const updatePost = (req, res) => {
 };
 
 const addComment = (req, res) => {
-  let postId = req.params.postId;
+  const postId = req.params.postId;
 
-  if (req.body.body !== "" && postId) {
-    let commentData = {
-      ...req.body,
-      post: postId
-    }
-
-    let newComment = new commentModel(commentData);
-    newComment.save()
-      .then(() => {
-        postModel.findById(postId)
-          .then(postInfo => {
-            postInfo.comments.push(newComment._id);
-            postInfo.save()
-              .then(() => {
-                res.redirect("/")
-              })
-              .catch(err => {
-                console.log(err);
-                res.redirect('/');
-              })
-          })
-          .catch(err => {
-            console.log(err);
-            res.redirect('/');
-          })
-      })
-      .catch(err => {
-        console.log(err);
-        res.redirect('/');
-      })
-  } else {
-    res.redirect('/');
+  if (!postId || !req.body?.body || req.body.body.trim() === "") {
+    return res.redirect("/");
   }
+
+  const commentData = {
+    body: req.body.body,
+    post: postId,
+    authorName: req.user.name,
+    authorId: req.user.id,
+  };
+
+  const newComment = new commentModel(commentData);
+
+  newComment
+    .save()
+    .then(() => {
+      return postModel.findByIdAndUpdate(
+        postId,
+        { $push: { comments: newComment._id } },
+        { new: true }
+      );
+    })
+    .then(() => res.redirect("/"))
+    .catch((err) => {
+      console.log("ADD COMMENT ERROR >>>", err);
+      return res.redirect("/");
+    });
 };
 
 
@@ -162,4 +158,4 @@ module.exports = {
   deletePost,
   addComment,
   deleteComment
-};
+    };

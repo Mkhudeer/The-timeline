@@ -1,16 +1,18 @@
 const express = require('express');
 const route = express.Router();
 const userController = require('../controllers/userControllers');
+const { requireAuth } = require("../middleware/auth");
 
 route.get('/', userController.homePage);
-route.post('/add-post', userController.addPost);
 route.get('/posts/:id', userController.seeMore);
-route.get('/edit/:id', userController.editPost);
-route.post('/edit/:id', userController.updatePost);
-route.get('/delete/post/:id', userController.deletePost);
 
-// comment routes
-route.post('/post/add/new-comment/:postId', userController.addComment);
-route.get('/delete/comment/:commentId/:postId', userController.deleteComment);
+route.post('/add-post', requireAuth, userController.addPost);
+route.get('/edit/:id', requireAuth, userController.editPost);
+route.post('/edit/:id', requireAuth, userController.updatePost);
+route.get('/delete/post/:id', requireAuth, userController.deletePost);
+
+
+route.post('/post/add/new-comment/:postId', requireAuth, userController.addComment);
+route.get('/delete/comment/:commentId/:postId', requireAuth, userController.deleteComment);
 
 module.exports = route;

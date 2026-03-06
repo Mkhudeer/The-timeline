@@ -3,8 +3,8 @@
 <head>
   <%- include('extras/head') %>
 </head>
-
 <body class="tl-body">
+  <%- include("extras/header", { user: user }) %>
   <main class="tl-shell">
     <div class="container tl-wrap">
       <header class="tl-header">
@@ -21,7 +21,7 @@
               <strong>Oops!</strong> <%= error %>
             </div>
           <% } %>
-
+            <% if (user) { %>
           <form class="tl-form" action="/add-post" method="POST">
             <div class="tl-field">
               <textarea
@@ -38,6 +38,7 @@
               <button class="btn btn-primary tl-btnPrimary" type="submit">Post a message</button>
             </div>
           </form>
+          <% } %>
         </div>
       </section>
 
@@ -46,8 +47,11 @@
           <article class="card tl-card tl-postCard mb-3">
             <div class="card-body">
               <div class="tl-meta">
-                <span class="tl-date"><%= post.createdAt.toDateString() %></span>
-              </div>
+  <span class="tl-date"><%= post.createdAt.toDateString() %></span>
+  <% if (post.authorName) { %>
+    <span class="tl-author"> - <%= post.authorName %></span>
+  <% } %>
+</div>
 
               <p class="tl-excerpt">
                 <%= post.post.length > 150 ? post.post.substring(0,150) + "..." : post.post %>
@@ -61,22 +65,29 @@
             </div>
 
             <div class="comments-form">
+              <% if (user) { %>
               <form method="POST" action="/post/add/new-comment/<%= post._id %>">
                 <input type="text" placeholder="comment..." autocomplete="off" name="body">
                 <button type="submit">Add Comment</button>
               </form>
+              <% } %>
             </div>
 
             <div class="comment-container">
               <% if (post.comments && post.comments.length > 0) { %>
                 <% post.comments.forEach(comment => { %>
                   <div class="comment-section">
-                    <h4><%= comment.body %></h4>
-
-                    
-                    <form action="/delete/comment/<%= comment._id %>/<%= post._id %>" method="GET">
-                      <button type="submit" class="comment-section-button">Delete</button>
-                    </form>
+                    <h4>
+  <%= comment.body %>
+  <% if (comment.authorName) { %>
+    <small> - <%= comment.authorName %></small>
+  <% } %>
+</h4>
+<% if (user) { %>
+  <form action="/delete/comment/<%= comment._id %>/<%= post._id %>" method="GET">
+    <button type="submit" class="comment-section-button">Delete</button>
+  </form>
+<% } %>
                   </div>
                 <% }) %>
               <% } %>

@@ -5,7 +5,9 @@ const postSchema = new mongoose.Schema({
   type: String,
   required: [true, "Post is required"],
   minlength: [25, "Post should be minimum 25 character"],
-  trim: true
+  trim: true,
+  authorName: { type: String, required: true },
+authorId: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
 },
     comments: [
         {
